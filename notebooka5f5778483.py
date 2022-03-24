@@ -203,9 +203,7 @@ print('Weight for class 1: {:.2f}'.format(weight_for_1))
 print('Weight for class 2: {:.2f}'.format(weight_for_2))
 
 from tensorflow import keras
-from tensorflow.keras import layers
-from tensorflow.keras.layers.experimental import preprocessing
-
+from tensorflow.python.keras import layers
 model = keras.Sequential([
     # Block One
     layers.Conv2D(filters=4, kernel_size=3, activation='relu', padding='same',
