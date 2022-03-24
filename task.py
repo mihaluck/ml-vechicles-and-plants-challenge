@@ -3,7 +3,7 @@ import json
 from pandas.io.json import json_normalize #package for flattening json in pandas df
 
 #load json object
-with open('../input/autos-and-plants/data.json') as f:
+with open('C:\Users\Михаил\Documents\ml-vechicles-and-plants-challenge\data.json') as f:
     d = json.load(f)
 
 #lets put the data into a pandas df
@@ -17,7 +17,7 @@ test = pd.json_normalize(d, 'test_bundle')
 # # PATHS TO IMAGES
 from os import makedirs
 from os import listdir
-PATH = '../input/autos-and-plants/data/data/'
+PATH = 'C:/Users/Михаил/Documents/ml-vechicles-and-plants-challenge/data/'
 IMGS = listdir(PATH); 
 print('There are %i images '%(len(IMGS)))
 
