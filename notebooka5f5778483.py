@@ -18,7 +18,7 @@ print('Number of replicas:', strategy.num_replicas_in_sync)
 print(tf.__version__)
 
 AUTOTUNE = tf.data.experimental.AUTOTUNE
-GCS_PATH = "C:\Users\Михаил\Documents\ml-vechicles-and-plants-challenge\data"
+COPY_PATH = r"C:\Users\Михаил\Documents\ml-vechicles-and-plants-challenge"
 BATCH_SIZE = 16 * strategy.num_replicas_in_sync
 IMAGE_SIZE = [90,90]
 EPOCHS = 100
@@ -26,7 +26,7 @@ EPOCHS = 100
 # # PATHS TO IMAGES
 from os import makedirs
 from os import listdir
-PATH = "C:\Users\Михаил\Documents\ml-vechicles-and-plants-challenge\data"
+PATH = r"C:\Users\Михаил\Documents\ml-vechicles-and-plants-challenge\data"
 IMGS = listdir(PATH); 
 print('There are %i images '%(len(IMGS)))
 
@@ -34,7 +34,7 @@ import json
 from pandas.io.json import json_normalize #package for flattening json in pandas df
 
 #load json object
-with open('C:\Users\Михаил\Documents\ml-vechicles-and-plants-challenge\data.json') as f:
+with open(r'C:\Users\Михаил\Documents\ml-vechicles-and-plants-challenge\data.json') as f:
     d = json.load(f)
 
 #lets put the data into a pandas df
@@ -48,7 +48,7 @@ from shutil import copyfile
 from random import seed
 from random import random
 # create directories
-dataset_home = 'Vehicles_vs_Plants/'
+dataset_home = COPY_PATH +'/Vehicles_vs_Plants/'
 subdirs = ['train/', 'test/']
 for subdir in subdirs:
     # create label subdirectories
@@ -77,10 +77,10 @@ for file in listdir(src_directory):
         copyfile(src, dst)
 
 filenames = tf.io.gfile.glob(str( + "/Vehicles_vs_Plants/train/*/*.jp*g"))
-filenames.extend(tf.io.gfile.glob(str(GCS_PATH + "/Vehicles_vs_Plants/train/*/*.png")))
+filenames.extend(tf.io.gfile.glob(str(COPY_PATH + "/Vehicles_vs_Plants/train/*/*.png")))
 train_filenames, val_filenames = train_test_split(filenames, test_size=0.2)
-test_filenames = tf.io.gfile.glob(str(GCS_PATH + "/Vehicles_vs_Plants/test/*/*.jp*g"))
-test_filenames.extend(tf.io.gfile.glob(str(GCS_PATH + "/Vehicles_vs_Plants/test/*/*.png")))
+test_filenames = tf.io.gfile.glob(str(COPY_PATH + "/Vehicles_vs_Plants/test/*/*.jp*g"))
+test_filenames.extend(tf.io.gfile.glob(str(COPY_PATH + "/Vehicles_vs_Plants/test/*/*.png")))
 
 COUNT_OTHER = len([filename for filename in train_filenames if "Other" in filename])
 print("Other images count in training set: " + str(COUNT_OTHER))
@@ -104,7 +104,7 @@ VAL_IMG_COUNT = tf.data.experimental.cardinality(val_list_ds).numpy()
 print("Validating images count: " + str(VAL_IMG_COUNT))
 
 CLASS_NAMES = np.array([str(tf.strings.split(item, os.path.sep)[-1].numpy())[2:-1]
-                        for item in tf.io.gfile.glob(str(GCS_PATH + "/Vehicles_vs_Plants/train/*"))])
+                        for item in tf.io.gfile.glob(str(COPY_PATH + "/Vehicles_vs_Plants/train/*"))])
 CLASS_NAMES
 
 def get_label(file_path):
@@ -140,7 +140,7 @@ train_ds = train_list_ds.map(process_path, num_parallel_calls=AUTOTUNE)
 
 val_ds = val_list_ds.map(process_path, num_parallel_calls=AUTOTUNE)
 
-test_list_ds = tf.data.Dataset.list_files(str(GCS_PATH + "/Vehicles_vs_Plants/test/*/*"))
+test_list_ds = tf.data.Dataset.list_files(str(COPY_PATH + "/Vehicles_vs_Plants/test/*/*"))
 test_ds = test_list_ds.map(process_path, num_parallel_calls=AUTOTUNE)
 test_ds = test_ds.batch(BATCH_SIZE)
 TEST_IMAGE_COUNT = tf.data.experimental.cardinality(test_list_ds).numpy()
