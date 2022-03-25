@@ -15,7 +15,7 @@
 Требуется установить дополнительные пакеты python:
 
 ```
-pip install jupyterlab tensorflow pandas matplotlib sklearn ipykernel numpy
+pip install jupyterlab tensorflow pandas matplotlib sklearn numpy
 ```
 
 ## Клонирование репозитория
